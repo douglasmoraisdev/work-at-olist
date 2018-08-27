@@ -6,15 +6,17 @@ from rest_framework.exceptions import NotFound, ValidationError
 class Record(models.Model):
     """Represent a Record data model
 
-    Contains the fields and business logic of a Record entities.
-    
+    Contains the fields and business logic of a Record entity.
+    Each pair of successful registration calls (Start / End) generates
+    a new bill record with your charge (a call price).
+
     Attributes:
         call_type (char, max length = 1): Type of a record. Accepted
             values are START_CALL_TYPE or END_CALL_TYPE
         timestamp: Date and Time the record occurs.
         call_id: Identifier a record pair (Start/End).
-        source: The phone number of the caller
-        destination: The phone number of the recipient
+        source: The phone number of the caller.
+        destination: The phone number of the recipient.
     """
 
     START_CALL_TYPE = 'S'
