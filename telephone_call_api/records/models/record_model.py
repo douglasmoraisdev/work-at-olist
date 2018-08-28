@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 from rest_framework.exceptions import NotFound, ValidationError
 
+
 class Record(models.Model):
     """Represent a Record data model
 

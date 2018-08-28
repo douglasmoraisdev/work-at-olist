@@ -1,1 +1,1 @@
-from .bill_model import *
+from .bill_model import Bill

@@ -3,12 +3,13 @@ import uuid
 from django.db import models
 from django.db.models import Count
 
+
 class BillRecord(models.Model):
     """Represent a Bill Record data model
 
     Contains the fields and business logic of a Bill Record entities.
     This model represents the charge record of a call.
-    
+
     Attributes:
         bill_origin (mandatory): The origin Bill of the bill record.
         start_call (mandatory): The origin start call (Start Type).

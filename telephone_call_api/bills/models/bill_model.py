@@ -4,12 +4,13 @@ from datetime import timedelta
 from django.db import models
 from django.db.models import Count
 
+
 class Bill(models.Model):
     """Represent a Bill data model
 
     Contains the fields and business logic of a Bill entities.
     Calculates the call prices and generate bill records.
-    
+
     Attributes:
         subscriber (mandatory): The subscriber of Bill (caller).
         period (mandatory): The reference period of Bill (month/year).
