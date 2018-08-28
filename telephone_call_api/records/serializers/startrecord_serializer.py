@@ -14,4 +14,4 @@ class StartRecordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Record
-        fields = ('type', 'timestamp', 'call_id', 'source', 'destination')
+        fields = ('call_type', 'timestamp', 'call_id', 'source', 'destination')
