@@ -3,6 +3,8 @@ import uuid
 from django.db import models
 from rest_framework.exceptions import NotFound, ValidationError
 
+from bills.models import Bill
+
 
 class Record(models.Model):
     """Represent a Record data model
@@ -12,12 +14,13 @@ class Record(models.Model):
     a new bill record with your charge (a call price).
 
     Attributes:
-        call_type (char, max length = 1): Type of a record. Accepted
+        call_type(mandatory): Type of a record. Accepted
             values are START_CALL_TYPE or END_CALL_TYPE
-        timestamp: Date and Time the record occurs.
-        call_id: Identifier a record pair (Start/End).
-        source: The phone number of the caller.
-        destination: The phone number of the recipient.
+        timestamp(mandatory): Date and Time the record occurs.
+        call_id(mandatory): Identifier a record pair (Start/End).
+        source(mandatory): The phone number of the caller.
+        destination(mandatory): The phone number of the recipient.
+        bill(optional): The Bill that the record belong
     """
 
     START_CALL_TYPE = 'S'
@@ -33,6 +36,8 @@ class Record(models.Model):
     call_id = models.IntegerField(blank=False, unique=False, null=False)
     source = models.CharField(max_length=11, blank=False, null=False)
     destination = models.CharField(max_length=11, blank=False, null=False)
+    bill = models.ForeignKey('bills.Bill', on_delete=models.CASCADE,
+                             blank=True, null=True, unique=False)
 
     def __str__(self):
         return self.source+' - '+self.call_type+' - '+str(self.call_id)
