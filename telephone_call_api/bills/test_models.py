@@ -242,7 +242,7 @@ class UpdateBillRecordTestCase(TestCase):
                                   "%Y-%m-%dT%H:%M:%S%z")
         _start_call.source = '51992657100'
         _start_call.destination = '5133877079'
-        _start_call.type = 'S'
+        _start_call.call_type = 'S'
         _start_call.call_id = '1'
         _start_call.save()
 
@@ -250,7 +250,7 @@ class UpdateBillRecordTestCase(TestCase):
         _end_call.timestamp = datetime.datetime.strptime(
                                   "2018-08-26T15:17:10+0000",
                                   "%Y-%m-%dT%H:%M:%S%z")
-        _end_call.type = 'E'
+        _end_call.call_type = 'E'
         _end_call.call_id = '1'
         _end_call.save()
 

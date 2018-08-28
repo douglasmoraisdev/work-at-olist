@@ -4,6 +4,8 @@ from datetime import timedelta
 from django.db import models
 from django.db.models import Count
 
+from billrecords.models import BillRecord
+
 
 class Bill(models.Model):
     """Represent a Bill data model
