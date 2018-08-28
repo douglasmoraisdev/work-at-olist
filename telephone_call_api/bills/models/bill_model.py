@@ -28,6 +28,29 @@ class Bill(models.Model):
     def __str__(self):
         return self.subscriber+' - '+self.period
 
+    def update_bill_record(self, start_call, end_call):
+        """Create a new call change record
+
+        Send Start call and End call data to generate
+        a new call change record on database
+        """
+
+        # Receive Start and End call from parameters
+        _start_period = start_call.timestamp
+        _end_period = end_call.timestamp
+
+        # Create a new BillRecord object
+        _bill_record = BillRecord()
+
+        # Populate the object and save
+        _bill_record.bill_origin = end_call.bill
+        _bill_record.start_call = start_call
+        _bill_record.end_call = end_call
+        _bill_record.call_price = self.calculate_charge(
+                                    _start_period, _end_period
+                                  )
+        _bill_record.save()
+
     def calculate_charge(self, start_period, end_period):
         """Calculate a call charge
 

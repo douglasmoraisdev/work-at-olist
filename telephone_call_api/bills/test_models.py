@@ -5,6 +5,8 @@ from datetime import timedelta
 from django.test import TestCase
 
 from bills.models import Bill
+from billrecords.models import BillRecord
+from records.models import Record
 
 
 class CalculateCallTaxTestCase(TestCase):
@@ -221,3 +223,53 @@ class CalculateCallTaxTestCase(TestCase):
         _one_minute_call_price = Bill().calculate_charge(ts_begin, ts_end)
 
         self.assertEqual(_one_minute_call_price, 86.67)
+
+
+class UpdateBillRecordTestCase(TestCase):
+    """Test Bill update bussiness rule"""
+
+    def setUp(self):
+        pass
+
+    def test_bill_update(self):
+        """
+        Test a Bill update (new Bill record)
+        """
+
+        _start_call = Record()
+        _start_call.timestamp = datetime.datetime.strptime(
+                                  "2018-08-26T15:07:10+0000",
+                                  "%Y-%m-%dT%H:%M:%S%z")
+        _start_call.source = '51992657100'
+        _start_call.destination = '5133877079'
+        _start_call.type = 'S'
+        _start_call.call_id = '1'
+        _start_call.save()
+
+        _end_call = Record()
+        _end_call.timestamp = datetime.datetime.strptime(
+                                  "2018-08-26T15:17:10+0000",
+                                  "%Y-%m-%dT%H:%M:%S%z")
+        _end_call.type = 'E'
+        _end_call.call_id = '1'
+        _end_call.save()
+
+        _start_period = _start_call.timestamp
+        _end_period = _end_call.timestamp
+
+        _bill = Bill()
+        _bill.subscriber = '51992657100'
+        _bill.period = '06/2018'
+        _bill.save()
+
+        _bill_record = BillRecord()
+        _bill_record.bill_origin = _bill
+        _bill_record.start_call = _start_call
+        _bill_record.end_call = _end_call
+        _bill_record.call_price = _bill.calculate_charge(
+                                    _start_period, _end_period
+                                  )
+        _bill_record.save()
+
+        self.assertEquals(BillRecord.objects.filter(
+                                            bill_origin=_bill).count(), 1)
