@@ -10,6 +10,25 @@ from bills.models import Bill
 from billrecords.models import BillRecord
 from records.models import Record
 
+def last_month_string():
+    actual_period = datetime.datetime.now()
+
+    if actual_period.month > 1:
+        _last_month = actual_period.month - 1
+        _year_period = actual_period.year
+    else:
+        _year_period = actual_period.year - 1
+        _last_month = 12
+
+    if _last_month < 10:
+        _last_month_str = '0%d' % _last_month
+    else:
+        _last_month_str = _last_month
+
+    _last_period = '%s%s' % (_last_month_str, _year_period)
+
+    return _last_period        
+
 
 class BillEndPointsTestCase(TestCase):
     """Test Bill Calls Endpoints behavior"""
@@ -17,7 +36,7 @@ class BillEndPointsTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-        # Create a Bill for tests
+        # Create a Bill of last month for tests
         _start_call = Record()
         _start_call.timestamp = datetime.datetime.strptime(
                                   "2018-08-26T15:07:10+0000",
@@ -41,7 +60,7 @@ class BillEndPointsTestCase(TestCase):
 
         _bill = Bill()
         _bill.subscriber = '51992657100'
-        _bill.period = '062018'
+        _bill.period = last_month_string()
         _bill.save()
 
         _bill_record = BillRecord()
@@ -129,7 +148,7 @@ class BillFormatTestCase(TestCase):
 
         _bill = Bill()
         _bill.subscriber = '51992657100'
-        _bill.period = '062018'
+        _bill.period = last_month_string()
         _bill.save()
 
         _bill_record = BillRecord()
@@ -159,7 +178,7 @@ class BillFormatTestCase(TestCase):
     def test_bill_endpoint_subscriber_and_period(self):
         """Test a output format (json) of a bill endpoint call"""
 
-        request = self.client.get('/bill/51992657100/062018/', {})
+        request = self.client.get('/bill/51992657100/072018/', {})
 
         self.assertContains(request, 'id', status_code=200)
         self.assertContains(request, 'subscriber', status_code=200)

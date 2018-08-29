@@ -259,7 +259,7 @@ class UpdateBillRecordTestCase(TestCase):
 
         _bill = Bill()
         _bill.subscriber = '51992657100'
-        _bill.period = '06/2018'
+        _bill.period = '072018'
         _bill.save()
 
         _bill_record = BillRecord()
@@ -273,3 +273,45 @@ class UpdateBillRecordTestCase(TestCase):
 
         self.assertEquals(BillRecord.objects.filter(
                                             bill_origin=_bill).count(), 1)
+
+
+class LastBillRulePeriodTestCase(TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_last_period_in_jan_2018(self):
+        """Test a cross year last month (January to December)"""
+
+        _jan_18_date = datetime.datetime.strptime("2018-01-01T", "%Y-%m-%dT")
+
+        _last_period = Bill().get_last_closed_period(_jan_18_date)
+
+        self.assertEquals(_last_period, '122017')
+
+    def test_last_period_in_feb_2018(self):
+        """Test rule on February month"""
+
+        _feb_18_date = datetime.datetime.strptime("2018-02-01T", "%Y-%m-%dT")
+
+        _last_period = Bill().get_last_closed_period(_feb_18_date)
+
+        self.assertEquals(_last_period, '012018')
+
+    def test_last_period_in_mar_2018(self):
+        """Test rule on March month"""
+
+        _mar_18_date = datetime.datetime.strptime("2018-03-01T", "%Y-%m-%dT")
+
+        _last_period = Bill().get_last_closed_period(_mar_18_date)
+
+        self.assertEquals(_last_period, '022018')
+
+    def test_last_period_in_dec_2018(self):
+        """Test rule on December month"""
+
+        _dec_18_date = datetime.datetime.strptime("2018-12-01T", "%Y-%m-%dT")
+
+        _last_period = Bill().get_last_closed_period(_dec_18_date)
+
+        self.assertEquals(_last_period, '112018')

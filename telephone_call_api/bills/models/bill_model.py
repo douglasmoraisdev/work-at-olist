@@ -1,4 +1,5 @@
 import uuid
+import datetime
 from datetime import timedelta
 
 from django.db import models
@@ -115,3 +116,32 @@ class Bill(models.Model):
                               2)
 
         return _total_charge
+
+    def get_last_closed_period(self, actual_period=None):
+        """Return the last month period string in MMYYYY format
+
+        Attributes:
+            actual_period(optional): The actual date of the query
+        """
+
+        if actual_period is None:
+            actual_period = datetime.datetime.now()
+
+        # Verify January case (subtract one year)
+        if actual_period.month > 1:
+            _last_month = actual_period.month - 1
+            _year_period = actual_period.year
+        else:
+            _year_period = actual_period.year - 1
+            _last_month = 12
+
+        # Format mount string
+        if _last_month < 10:
+            _last_month_str = '0%d' % _last_month
+        else:
+            _last_month_str = _last_month
+
+        # Format the final result
+        _last_period = '%s%s' % (_last_month_str, _year_period)
+
+        return _last_period

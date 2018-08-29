@@ -20,7 +20,7 @@ class BillFieldsLookupMixin(object):
         if 'period' in filter:
             obj = get_object_or_404(queryset, **filter)
         else:
-            filter['period'] = '062018'
+            filter['period'] = Bill().get_last_closed_period()
             obj = get_object_or_404(queryset, **filter)
 
         return obj
