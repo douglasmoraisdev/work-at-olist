@@ -12,6 +12,32 @@ class StartRecordSerializer(serializers.ModelSerializer):
         exposed API endpoints.
     """
 
+    MAX_PHONE_NUMBER_SIZE = 11
+    MIN_PHONE_NUMBER_SIZE = 10
+
     class Meta:
         model = Record
         fields = ('call_type', 'timestamp', 'call_id', 'source', 'destination')
+
+    def is_valid_phone_number_size(self, value):
+
+        return (self.MAX_PHONE_NUMBER_SIZE >= len(value)) and \
+                self.MIN_PHONE_NUMBER_SIZE <= len(value)
+
+    def validate_source(self, value):
+
+        # Evaluates phone number format
+        if not self.is_valid_phone_number_size(value):
+            raise serializers.ValidationError("Wrong phone number format\n\
+                                              Expected AAXXXXXXX(X)\
+                                              10 to 11 size number")
+        return value
+
+    def validate_destination(self, value):
+
+        # Evaluates phone number format
+        if not self.is_valid_phone_number_size(value):
+            raise serializers.ValidationError("Wrong phone number format\n\
+                                              Expected AAXXXXXXX(X)\
+                                              10 to 11 size number")
+        return value

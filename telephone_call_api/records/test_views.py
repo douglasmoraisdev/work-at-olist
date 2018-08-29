@@ -122,3 +122,22 @@ class TestRecordEndPointsTestCase(TestCase):
         request = self.client.put('/endrec/', {})
 
         self.assertEquals(request.status_code, 405)
+
+    def test_wrong_phone_format_response(self):
+        """Try POST a call with wrong phone format
+        Expect a response 400 (Bad Request) response
+        """
+
+        _start_timestamp = "2018-08-26T15:07:10+0000"
+        _end_timestamp = "2018-08-26T15:17:10+0000"
+        _source = '51992657100'
+        _destination = '512' #wrong size
+
+        request = self.client.post('/startrec/', {'source': _source,
+                                        'destination': _destination,
+                                        'timestamp': _start_timestamp,
+                                        'call_type': 'S',
+                                        'call_id': 1
+                                        })
+
+        self.assertEquals(request.status_code, 400)
