@@ -1,14 +1,12 @@
 """URL patterns for Bill endpoints
-   defined on 'router' attribute
+   defined on 'urlpatterns' attribute
 """
-from rest_framework import routers
 from django.conf.urls import url, include
+from django.urls import path
 
 from bills.views import BillViewSet
 
-router = routers.DefaultRouter()
-router.register(r'bill', BillViewSet)
-
 urlpatterns = [
-    url(r'^', include(router.urls)),
+    url('^bill/(?P<subscriber>.+)/(?P<period>.+)/$', BillViewSet.as_view()),
+    url('^bill/(?P<subscriber>.+)/$', BillViewSet.as_view()),
 ]
