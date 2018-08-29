@@ -210,4 +210,21 @@ class TestRecordModels(TestCase):
 
         _erecord.save()
 
-        self.assertEquals(Bill.objects.filter(subscriber='51992657100', period='082018').count(), 1)
+        self.assertEquals(Bill.objects.filter(subscriber='51992657100',
+                                              period='082018').count(), 1)
+
+    def test_save_record_S(self):
+        """Save a S type call record with same source and destination
+        Expect fail (ValidationError exception)
+        """
+
+        _srecord = Record()
+        _srecord.timestamp = datetime.datetime.strptime(
+                                  "2018-08-26T15:07:10+0000",
+                                  "%Y-%m-%dT%H:%M:%S%z")
+        _srecord.source = '51992657100'
+        _srecord.destination = '51992657100'
+        _srecord.call_type = 'S'
+        _srecord.call_id = '1'
+
+        self.assertRaises(ValidationError, lambda: _srecord.save())

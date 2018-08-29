@@ -122,4 +122,9 @@ class Record(models.Model):
             Bill().update_bill_record(_origin_start_call.get(), self)
 
         else:
+            # Verify a start call with same source and destination number
+            if (self.source == self.destination):
+                raise ValidationError(
+                        {'detail': 'Same source and destination numbers'})
+
             super(Record, self).save(*args, **kwargs)
