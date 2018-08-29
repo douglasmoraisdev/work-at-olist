@@ -89,7 +89,8 @@ class Record(models.Model):
                                       start call is higher then end call'})
 
             # Get the period string
-            _end_call_period = self.timestamp.strftime("%m/%Y")
+            # The end call date determine his bill period
+            _end_call_period = self.timestamp.strftime("%m%Y")
 
             self.source = _origin_start_call.get().source
             self.destination = _origin_start_call.get().destination

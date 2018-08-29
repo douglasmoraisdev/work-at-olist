@@ -6,6 +6,7 @@ from rest_framework.exceptions import NotFound, ValidationError
 
 
 from records.models import Record
+from bills.models import Bill
 
 
 class TestRecordModels(TestCase):
@@ -182,3 +183,31 @@ class TestRecordModels(TestCase):
 
         self.assertRaises(ValidationError, lambda: _srecord_2.save())
         self.assertNotEquals(Record.objects.filter(call_id=1).count(), 2)
+
+    def test_call_bill_period(self):
+        """Save a call pair record and verify his bill period
+
+        Should have to be the end call record date period
+        """
+
+        _srecord = Record()
+        _srecord.timestamp = datetime.datetime.strptime(
+                                    "2018-07-26T15:07:10+0000",
+                                    "%Y-%m-%dT%H:%M:%S%z")
+        _srecord.source = '51992657100'
+        _srecord.destination = '5133877079'
+        _srecord.call_type = 'S'
+        _srecord.call_id = '1'
+
+        _srecord.save()
+
+        _erecord = Record()
+        _erecord.timestamp = datetime.datetime.strptime(
+                                        "2018-08-01T16:16:13+0000",
+                                        "%Y-%m-%dT%H:%M:%S%z")
+        _erecord.call_type = 'E'
+        _erecord.call_id = '1'
+
+        _erecord.save()
+
+        self.assertEquals(Bill.objects.filter(subscriber='51992657100', period='082018').count(), 1)
