@@ -18,6 +18,24 @@ class StartRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Record
         fields = ('call_type', 'timestamp', 'call_id', 'source', 'destination')
+        extra_kwargs = {
+            'call_type': {
+                'help_text': "Type of a Call Record (Mandatory 'S' = Start)"
+            },
+            'timestamp': {
+                'help_text': "Date/time of a Call Start Record"
+                             "Format: YYYY-MM-DDThh:mm:ssZ"
+            },
+            'call_id': {
+                'help_text': 'Id of Call Start Record'
+            },
+            'source': {
+                'help_text': 'Phone number of the caller'
+            },
+            'destination': {
+                'help_text': 'Phone number of the recipient'
+            },
+        }
 
     def is_valid_phone_number_size(self, value):
 

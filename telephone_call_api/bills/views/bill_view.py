@@ -40,21 +40,16 @@ class BillFieldsLookupMixin(object):
         return obj
 
 
-class BillViewSet(BillFieldsLookupMixin, generics.RetrieveAPIView):
-    """Define a API endpoint for expose the Bill.
+class BillSubscriberViewSet(BillFieldsLookupMixin, generics.RetrieveAPIView):
+    """Get Bill details of a subscriber on a period"""
 
-    Expose only the GET method for the API
+    queryset = Bill.objects.all()
+    serializer_class = BillSerializer
+    lookup_fields = ('subscriber', 'period')
 
-    Attributes:
-    subscriber(mandatory): the subscriber phone number. Format: AAXXXXXXXX(X)
-        Where:
-        AA - Area code
-        XXXXXXXX(X) - Phone number with 8 or 9 digits
-    period(optional): the bill month/year period reference Format: (MMYYYY)
-        Where:
-        MM - Month with 2 digits
-        YYYY - Year with 2 digits
-    """
+
+class BillLastPeriodViewSet(BillFieldsLookupMixin, generics.RetrieveAPIView):
+    """Get Bill details of a subscriber of the last month"""
 
     queryset = Bill.objects.all()
     serializer_class = BillSerializer

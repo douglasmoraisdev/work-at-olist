@@ -15,9 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.conf.urls import url
+
+from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
     path('', include('records.urls')),
     path('', include('bills.urls')),
     path('admin/', admin.site.urls),
+    url(r'^docs/', include_docs_urls(title='Telephone Calls Api',
+                                     description="API Endpoints Documentation"
+                                     )
+        )
 ]

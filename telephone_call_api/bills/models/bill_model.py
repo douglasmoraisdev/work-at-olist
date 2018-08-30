@@ -25,8 +25,12 @@ class Bill(models.Model):
     REDUCED_CALL_CHARGE = 0.0
     REDUCED_TIME_BEGIN = 22
     REDUCED_TIME_END = 6
-    subscriber = models.CharField(max_length=11, blank=False, null=False)
-    period = models.CharField(max_length=7, blank=False, null=False)
+    subscriber = models.CharField(max_length=11, blank=False, null=False,
+                                  help_text="Subscriber phone number"
+                                  )
+    period = models.CharField(max_length=7, blank=False, null=False,
+                              help_text="The Period of a Bill. Format (MMYYYY)"
+                              )
 
     def __str__(self):
         return self.subscriber+' - '+self.period
