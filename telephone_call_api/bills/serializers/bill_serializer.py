@@ -13,10 +13,18 @@ class BillSerializer(serializers.ModelSerializer):
     """
 
     calls_records = serializers.SerializerMethodField()
+    period = serializers.SerializerMethodField()
 
     class Meta:
         model = Bill
         fields = ('id', 'subscriber', 'period', 'calls_records')
+
+    def get_period(self, bill):
+
+        # Format the period output to MM/YYYY
+        _formated_period = '%s/%s' % (bill.period[0:2], bill.period[2:6])
+
+        return _formated_period
 
     def get_calls_records(self, bill):
         """Define the format for bill call records list output"""

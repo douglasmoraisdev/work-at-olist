@@ -85,8 +85,8 @@ class Record(models.Model):
             # Verify the Start and End date/time consistency
             if _origin_start_call.get().timestamp > self.timestamp:
                 raise ValidationError(
-                                      {'detail': 'Date/time from origin \
-                                      start call is higher then end call'})
+                                      {'detail': "Date/time from origin "
+                                       "start call is higher then end call"})
 
             # Get the period string
             # The end call date determine his bill period
