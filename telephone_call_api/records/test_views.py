@@ -131,13 +131,51 @@ class TestRecordEndPointsTestCase(TestCase):
         _start_timestamp = "2018-08-26T15:07:10+0000"
         _end_timestamp = "2018-08-26T15:17:10+0000"
         _source = '51992657100'
-        _destination = '512' #wrong size
+        _destination = '512'   # wrong size
 
-        request = self.client.post('/startrec/', {'source': _source,
+        request = self.client.post('/startrec/', {
+                                        'source': _source,
                                         'destination': _destination,
                                         'timestamp': _start_timestamp,
                                         'call_type': 'S',
                                         'call_id': 1
-                                        })
+                                                  })
+
+        self.assertEquals(request.status_code, 400)
+
+    def test_wrong_start_call_type_E(self):
+        """Make a POST request to End Record Call endpoint
+        Expect a response 400 (Bad Request) response
+        """
+        _start_timestamp = "2018-08-26T15:07:10+0000"
+        _end_timestamp = "2018-08-26T15:17:10+0000"
+        _source = '51992657100'
+        _destination = '5130232641'
+
+        # first create a Start Call Record (origin)
+        request = self.client.post('/startrec/', {
+                                        'source': _source,
+                                        'destination': _destination,
+                                        'timestamp': _start_timestamp,
+                                        'call_type': 'E',  # End Type
+                                        'call_id': 1
+                                                  })
+
+        self.assertEquals(request.status_code, 400)
+
+    def test_wrong_end_call_type_S(self):
+        """Make a POST request to End Record Call endpoint
+        Expect a response 400 (Bad Request) response
+        """
+        _start_timestamp = "2018-08-26T15:07:10+0000"
+        _end_timestamp = "2018-08-26T15:17:10+0000"
+        _source = '51992657100'
+        _destination = '5130232641'
+
+        # first create a Start Call Record (origin)
+        request = self.client.post('/endrec/', {'timestamp': _end_timestamp,
+                                                'call_type': 'S',  # Start Type
+                                                'call_id': 1
+                                                })
 
         self.assertEquals(request.status_code, 400)

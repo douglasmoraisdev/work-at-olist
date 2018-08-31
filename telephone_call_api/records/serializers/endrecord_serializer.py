@@ -27,3 +27,10 @@ class EndRecordSerializer(serializers.ModelSerializer):
                 'help_text': 'Origin Id of the Call Start Record '
             }
         }
+
+    def validate_call_type(self, value):
+
+        # Evaluates call_type string
+        if not value == 'E':
+            raise serializers.ValidationError("Wrong call_type must be 'E'")
+        return value

@@ -62,3 +62,10 @@ class StartRecordSerializer(serializers.ModelSerializer):
                                               " with size from 10 to 11 "
                                               " characters")
         return value
+
+    def validate_call_type(self, value):
+
+        # Evaluates call_type string
+        if not value == 'S':
+            raise serializers.ValidationError("Wrong call_type must be 'S'")
+        return value
