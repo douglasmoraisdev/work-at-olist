@@ -20,14 +20,15 @@ class StartRecordSerializer(serializers.ModelSerializer):
         fields = ('call_type', 'timestamp', 'call_id', 'source', 'destination')
         extra_kwargs = {
             'call_type': {
-                'help_text': "Type of a Call Record (Mandatory 'S' = Start)"
+                'help_text': "Type of a Call Start Record (mandatory: 'S')"
             },
             'timestamp': {
-                'help_text': "Date/time of a Call Start Record"
+                'help_text': "Date/time of a Call Start Record. "
                              "Format: YYYY-MM-DDThh:mm:ssZ"
             },
             'call_id': {
-                'help_text': 'Id of Call Start Record'
+                'help_text': "Id of the Call Start Record. Makes a pair with "
+                             "the a Call End Record"
             },
             'source': {
                 'help_text': 'Phone number of the caller'

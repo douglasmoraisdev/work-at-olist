@@ -17,10 +17,10 @@ class EndRecordSerializer(serializers.ModelSerializer):
         fields = ('call_type', 'timestamp', 'call_id')
         extra_kwargs = {
             'call_type': {
-                'help_text': "Type of a Call Record (Mandatory 'E' = End)"
+                'help_text': "Type of a Call End Record (mandatory: 'E')"
             },
             'timestamp': {
-                'help_text': "Date/time of a Call End Record"
+                'help_text': "Date/time of a Call End Record. "
                              "Format: YYYY-MM-DDThh:mm:ssZ"
             },
             'call_id': {

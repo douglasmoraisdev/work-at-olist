@@ -41,7 +41,7 @@ class BillFieldsLookupMixin(object):
 
 
 class BillSubscriberViewSet(BillFieldsLookupMixin, generics.RetrieveAPIView):
-    """Get Bill details of a subscriber on a period"""
+    """Get bill details of a subscriber on a given period"""
 
     queryset = Bill.objects.all()
     serializer_class = BillSerializer
@@ -49,7 +49,7 @@ class BillSubscriberViewSet(BillFieldsLookupMixin, generics.RetrieveAPIView):
 
 
 class BillLastPeriodViewSet(BillFieldsLookupMixin, generics.RetrieveAPIView):
-    """Get Bill details of a subscriber of the last month"""
+    """Get last month bill details of a subscriber"""
 
     queryset = Bill.objects.all()
     serializer_class = BillSerializer
