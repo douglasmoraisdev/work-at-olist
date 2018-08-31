@@ -47,16 +47,18 @@ class StartRecordSerializer(serializers.ModelSerializer):
 
         # Evaluates phone number format
         if not self.is_valid_phone_number_size(value):
-            raise serializers.ValidationError("Wrong phone number format\n\
-                                              Expected AAXXXXXXX(X)\
-                                              10 to 11 size number")
+            raise serializers.ValidationError("Wrong phone number format "
+                                              "Expected AAXXXXXXX(X)"
+                                              " with size from 10 to 11 "
+                                              " characters")
         return value
 
     def validate_destination(self, value):
 
         # Evaluates phone number format
         if not self.is_valid_phone_number_size(value):
-            raise serializers.ValidationError("Wrong phone number format\n\
-                                              Expected AAXXXXXXX(X)\
-                                              10 to 11 size number")
+            raise serializers.ValidationError("Wrong phone number format "
+                                              "Expected AAXXXXXXX(X)"
+                                              " with size from 10 to 11 "
+                                              " characters")
         return value
