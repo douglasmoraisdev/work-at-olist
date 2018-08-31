@@ -228,3 +228,45 @@ class TestRecordModels(TestCase):
         _srecord.call_id = '1'
 
         self.assertRaises(ValidationError, lambda: _srecord.save())
+
+
+class ManyBillsConsistencyTestCase(TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_many_subscribers_bills_in_same_month(self):
+
+        # loop for create 40 subscribers
+        _total_subs = 40
+        while _total_subs > 0:
+            _srecord = Record()
+            _srecord.timestamp = datetime.datetime.strptime(
+                                        "2018-07-26T15:07:10+0000",
+                                        "%Y-%m-%dT%H:%M:%S%z")
+            _srecord.source = '519926571%s' % str(_total_subs)
+            _srecord.destination = '513387707%s' % str(_total_subs)
+            _srecord.call_type = 'S'
+            _srecord.call_id = _total_subs
+
+            _srecord.save()
+
+            _erecord = Record()
+            _erecord.timestamp = datetime.datetime.strptime(
+                                            "2018-08-01T16:16:13+0000",
+                                            "%Y-%m-%dT%H:%M:%S%z")
+            _erecord.call_type = 'E'
+            _erecord.call_id = _total_subs
+
+            _erecord.save()
+
+            _total_subs = _total_subs - 1
+
+        # loop for verify the 40 created bills
+        _total_subs = 40
+        while _total_subs > 0:
+            self.assertEquals(Bill.objects.filter(
+                                   subscriber='519926571%s' % str(_total_subs),
+                                   period='082018').count(), 1
+                              )
+            _total_subs = _total_subs - 1

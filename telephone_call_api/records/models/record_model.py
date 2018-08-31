@@ -95,10 +95,11 @@ class Record(models.Model):
             self.source = _origin_start_call.get().source
             self.destination = _origin_start_call.get().destination
 
-            # Get a already created bill for the period
+            # Get a already created bill for the subscriber on period
             _already_created_bill = Bill.objects.filter(
-                                                        period=_end_call_period
-                                                        )
+                                                 period=_end_call_period,
+                                                 subscriber=self.source
+                                                 )
             if _already_created_bill.exists():
                 self.bill = _already_created_bill.get()
 
